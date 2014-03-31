@@ -1,0 +1,65 @@
+require 'aranea/failure_repository'
+require 'rack'
+
+module Aranea
+
+  FailureFailure = Class.new(RuntimeError)
+
+  module Rack
+
+    class FailureCreator
+
+      def initialize(app, config = {})
+        @app = app
+        @config = config
+      end
+
+      def call(env)
+        if failure_creation_request?(env)
+          response = begin
+            [create_failure(::Rack::Utils.parse_query(env['QUERY_STRING'])), 201, {}]
+          rescue FailureFailure => e
+            [e.message, 422, {}]
+          rescue
+            [$!.message, 500, {}]
+          end
+          ::Rack::Response.new(*response).finish
+        else
+          @app.call(env)
+        end
+      end
+
+    protected
+
+      def failure_creation_request?(env)
+        env['REQUEST_METHOD'] == 'POST' && env['PATH_INFO'] == '/disable'
+      end
+
+      def create_failure(options)
+        dependency = options.fetch('dependency') { raise FailureFailure, 'Please provide a dependency to simulate failing' }
+        minutes    = options.fetch('minutes')    { 5 }
+        failure    = options.fetch('failure')    { '500' }
+
+        unless failure =~ /\A((4|5)\d\d|timeout)\Z/
+          raise FailureFailure, "failure should be a 4xx or 5xx status code or timeout, got #{failure}"
+        end
+
+        unless minutes.to_i > 0
+          raise FailureFailure, "minutes should be an integer greater than 0, got #{minutes}"
+        end
+
+        Failure.create(pattern: dependency, minutes: minutes.to_i, failure: failure)
+
+        result = "For the next #{minutes} minutes, all requests to urls containing '#{dependency}' will #{failure}"
+
+        #TODO: injectable logger
+        puts "Aranea: #{result}"
+
+        result
+
+      end
+
+    end
+
+  end
+end
