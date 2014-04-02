@@ -34,7 +34,7 @@ module Aranea
     end
 
     def should_fail?(request_env)
-      @pattern.match(request_env[:url])
+      @pattern.match(request_env[:url].to_s)
     end
 
     def respond!
