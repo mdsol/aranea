@@ -74,14 +74,14 @@ describe Aranea::Rack::FailureCreator do
     end
 
     it 'responds with an error on a malformed minutes parameter' do
-      [-1, 0.5, 'llama', ''].each do |minutes|
+      [-1, 0.5, 'llama', '', 61].each do |minutes|
         @env['QUERY_STRING'] = "dependency=example&minutes=#{minutes}"
-        expect(response_body).to eq("minutes should be an integer greater than 0, got #{minutes}")
+        expect(response_body).to eq("minutes should be an integer from 1 to 60, got #{minutes}")
       end
     end
 
     it 'responds with an error if a failure is already active' do
-      @env['QUERY_STRING'] = 'dependency=example&minutes=100'
+      @env['QUERY_STRING'] = 'dependency=example&minutes=60'
       described_class.new(@app).call(@env).last
       status, headers, response = described_class.new(@app).call(@env).to_a
       expect(status).to eq(422)

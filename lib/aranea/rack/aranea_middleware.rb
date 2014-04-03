@@ -5,6 +5,8 @@ module Aranea
 
   FailureFailure = Class.new(RuntimeError)
 
+  ALLOWED_MINUTES = 1..60
+
   module Rack
 
     class FailureCreator
@@ -44,8 +46,8 @@ module Aranea
           raise FailureFailure, "failure should be a 4xx or 5xx status code or timeout, got #{failure}"
         end
 
-        unless minutes.to_i > 0
-          raise FailureFailure, "minutes should be an integer greater than 0, got #{minutes}"
+        unless ALLOWED_MINUTES.cover?(minutes.to_i)
+          raise FailureFailure, "minutes should be an integer from #{ALLOWED_MINUTES.begin} to #{ALLOWED_MINUTES.end}, got #{minutes}"
         end
 
         Failure.create(pattern: dependency, minutes: minutes.to_i, failure: failure)
