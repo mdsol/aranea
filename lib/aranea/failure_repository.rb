@@ -1,9 +1,12 @@
 require 'faraday'
 require 'active_support/core_ext/numeric/time'
-
 module Aranea
+  
+  # TODO: Allow this hardcoded whitelisting to be configurable in the consumer
+  WHITELISTED_BASEURIS = ['sandbox.imedidata.net']
 
   class Failure
+    
     class << self
 
       def current
@@ -34,7 +37,7 @@ module Aranea
     end
 
     def should_fail?(request_env)
-      @pattern.match(request_env[:url].to_s)
+      WHITELISTED_BASEURIS.include?(URI.parse(request_env[:url]).host.split('-').last) && @pattern.match(request_env[:url].to_s)
     end
 
     def respond!
