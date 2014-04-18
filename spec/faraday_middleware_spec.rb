@@ -69,6 +69,7 @@ describe Aranea::Faraday::FailureSimulator do
     end
     
     it 'passes requests through transparently even if the request matches' do
+      Aranea::Failure.create(pattern: 'google', failure: '415', minutes: 100)
       expect(@app).to receive(:call).with(@env.clone)
       described_class.new(@app).call(@env)
     end
