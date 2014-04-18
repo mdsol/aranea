@@ -14,7 +14,7 @@ module Aranea
 
         current_failure = Failure.current
 
-        if current_failure.should_fail?(request_env)
+        if current_failure.should_fail?(request_env, @app)
           #TODO: injectable logger
           puts "Aranea: simulating a failed call on #{request_env}"
           current_failure.respond!
