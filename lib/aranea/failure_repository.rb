@@ -1,6 +1,5 @@
 require 'faraday'
 require 'active_support/core_ext/numeric/time'
-require 'debugger'
 module Aranea
   
   # TODO: Allow this hardcoded whitelisting to be configurable in the consumer
