@@ -5,6 +5,7 @@ describe Aranea::Faraday::FailureSimulator do
   before do
     @app = Object.new
     @env = {}
+    @app.stub(:config).and_return({'mauth_baseurl' => 'http://mauth-sandbox.imedidata.net'})
   end
 
   after do
@@ -65,7 +66,7 @@ describe Aranea::Faraday::FailureSimulator do
     
     before do
       @env[:url] = 'https://www.google.com/search?q=adorable+kittens'
-      stub_const("Aranea::WHITELISTED_BASEURIS", ["sandbox.imedidata.net"])
+      stub_const("Aranea::WHITELISTED_BASEURIS", ["blahblah.imedidata.net"])
     end
     
     it 'passes requests through transparently even if the request matches' do

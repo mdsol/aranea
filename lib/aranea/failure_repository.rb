@@ -1,5 +1,6 @@
 require 'faraday'
 require 'active_support/core_ext/numeric/time'
+require 'debugger'
 module Aranea
   
   # TODO: Allow this hardcoded whitelisting to be configurable in the consumer
@@ -36,8 +37,8 @@ module Aranea
       @response = params[:failure]
     end
 
-    def should_fail?(request_env)
-      WHITELISTED_BASEURIS.include?(URI.parse(request_env[:url]).host.split('-').last) && @pattern.match(request_env[:url].to_s)
+    def should_fail?(request_env, app)
+      WHITELISTED_BASEURIS.include?(URI.parse(app.config['mauth_baseurl']).host.split('-').last) && @pattern.match(request_env[:url].to_s)
     end
 
     def respond!
