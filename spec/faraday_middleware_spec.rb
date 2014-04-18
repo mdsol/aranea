@@ -65,7 +65,7 @@ describe Aranea::Faraday::FailureSimulator do
     
     before do
       @env[:url] = 'https://www.google.com/search?q=adorable+kittens'
-      stub_const("Aranea::WHITELISTED_BASEURIS", ["-sandbox.imedidata.net"])
+      stub_const("Aranea::WHITELISTED_BASEURIS", ["sandbox.imedidata.net"])
     end
     
     it 'passes requests through transparently even if the request matches' do
