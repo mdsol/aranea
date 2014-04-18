@@ -6,6 +6,7 @@ describe Aranea::Faraday::FailureSimulator do
     @app = Object.new
     @env = {}
     @app.stub(:config).and_return({'mauth_baseurl' => 'http://mauth-sandbox.imedidata.net'})
+    stub_const("Aranea::WHITELISTED_BASEURIS", ["sandbox.imedidata.net"])
   end
 
   after do
@@ -31,7 +32,6 @@ describe Aranea::Faraday::FailureSimulator do
 
       before do
         @env[:url] = 'https://www.bing.com/search?q=adorable+kittens&go=&qs=n&form=QBLH&pq=adorable+kittens'
-        stub_const("Aranea::WHITELISTED_BASEURIS", ["www.bing.com"])
       end
 
       it 'passes requests through transparently' do
@@ -47,7 +47,6 @@ describe Aranea::Faraday::FailureSimulator do
         described_class.any_instance.stub(:puts)
 
         @env[:url] = 'https://www.google.com/search?q=adorable+kittens'
-        stub_const("Aranea::WHITELISTED_BASEURIS", ["www.google.com"])
         expect(@app).not_to receive(:call)
       end
 
@@ -81,7 +80,6 @@ describe Aranea::Faraday::FailureSimulator do
     before do
       Aranea::Failure.create(pattern: 'yahoo|google', failure: 'timeout', minutes: 100)
       @env[:url] = 'https://www.google.com/search?q=adorable+kittens'
-      stub_const("Aranea::WHITELISTED_BASEURIS", ["www.google.com"])
       described_class.any_instance.stub(:puts)
     end
 

@@ -87,7 +87,7 @@ module Aranea
 
   class NullFailure
 
-    def should_fail?(request_env)
+    def should_fail?(request_env, app)
       false
     end
 
