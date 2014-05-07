@@ -37,7 +37,7 @@ module Aranea
     end
 
     def should_fail?(request_env, app)
-      WHITELISTED_BASEURIS.include?(URI.parse(app.config['mauth_baseurl']).host.split('-').last) && @pattern.match(request_env[:url].to_s)
+      WHITELISTED_BASEURIS.include?(URI.parse(app.as_json['app'].as_json['config']['mauth_baseurl']).host.split('-').last) && @pattern.match(request_env[:url].to_s)
     end
 
     def respond!
