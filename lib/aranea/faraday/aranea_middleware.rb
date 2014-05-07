@@ -11,7 +11,9 @@ module Aranea
       end
 
       def call(request_env)
-
+        Rails.logger.info "Env: #{request_env}, App: #{@app}, config: #{@config}"
+        puts "Env: #{request_env}, App: #{@app}, config: #{@config}"
+        
         current_failure = Failure.current
 
         if current_failure.should_fail?(request_env, @app)
