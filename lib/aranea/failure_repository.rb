@@ -2,8 +2,7 @@ require 'faraday'
 require 'active_support/core_ext/numeric/time'
 module Aranea
   
-  # TODO: Allow this hardcoded whitelisting to be configurable in the consumer
-  WHITELISTED_BASEURIS = ['sandbox.imedidata.net']
+  # TODO: Look into moving whitelisting of consumer hostnames to here and allowing it to be configurable via the consuming application
 
   class Failure
     
@@ -37,7 +36,7 @@ module Aranea
     end
 
     def should_fail?(request_env, app)
-      WHITELISTED_BASEURIS.include?(URI.parse(app.config['mauth_baseurl']).host.split('-').last) && @pattern.match(request_env[:url].to_s)
+      @pattern.match(request_env[:url].to_s)
     end
 
     def respond!
