@@ -21,7 +21,7 @@ You must specify a dependency. If you want *all* external requests to fail, set 
 
 You can override the duration of the test by specifying `minutes=` with a number from 1 to 60.
 
-You can also override the simulated response code, if your app is meant to handle different failures differently. `?dependency=google&failure=404` will simulate a 404 (Not Found) response instead of a 500 (Internal Server Error). `dependency=google&failure=timeout` will pretend the server never responded at all (although it will raise an error instantly; the illusion is not perfect).
+You can also override the simulated response code, if your app is meant to handle different failures differently. `?dependency=google&failure=404` will simulate a 404 (Not Found) response instead of a 500 (Internal Server Error). `?dependency=google&failure=timeout` will pretend the server never responded at all (although it will raise an error instantly; the illusion is not perfect).
 
 # Activating Aranea Programmatically
 
