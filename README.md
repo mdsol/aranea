@@ -23,6 +23,16 @@ You can override the duration of the test by specifying `minutes=` with a number
 
 You can also override the simulated response code, if your app is meant to handle different failures differently. `?dependency=google&failure=404` will simulate a 404 (Not Found) response instead of a 500 (Internal Server Error). `?dependency=google&failure=timeout` will pretend the server never responded at all (although it will raise an error instantly; the illusion is not perfect).
 
+**Sample calls and their effects:**
+
+`https://myapp-sandbox.example.com/disable?dependency=google`. For the next 5 minutes, all requests to urls containing 'google' will 500.
+
+`https://myapp-sandbox.example.com/disable?dependency=.&failure=403` For the next 5 minutes, all external requests will 403.
+
+`https://myapp-sandbox.example.com/disable?dependency=google|yahoo&minutes=10` For the next 10 minutes, all requests to urls containing 'google' and/or 'yahoo' will 500.
+
+`https://myapp-sandbox.example.com/disable?dependency=google|yahoo&minutes=10&failure=timeout` For the next 10 minutes, all requests to urls containing 'google' and/or 'yahoo' will raise a Timeout error.
+
 # Activating Aranea Programmatically
 
 From inside your application, you can run
