@@ -54,28 +54,35 @@ module Aranea
     #TODO: Actually implement Repository pattern, dependency injection and all.
     # As is we only support sharing between multiple instances if Rails.cache exists and does
     class Repository
-      @cache = if defined?(Rails::RAILS_CACHE) && Rails.cache
-                  Rails.cache
-                else
-                  require 'active_support/cache'
-                  ActiveSupport::Cache::MemoryStore.new
-                end
-
+      
       KEY = 'aranea_current_failure'
 
       class << self
 
         def store(failure, lifespan)
           failure.expiration_date = Time.now + lifespan
-          @cache.write(KEY, failure, expires_in: lifespan)
+          cache.write(KEY, failure, expires_in: lifespan)
         end
 
         def get
-          @cache.read(KEY)
+          cache.read(KEY)
         end
 
         def clear
-          @cache.delete(KEY)
+          cache.delete(KEY)
+        end
+
+        def cache
+          @cache ||= rails_cache || memory_store
+        end
+
+        def rails_cache
+          defined?(Rails::RAILS_CACHE) && Rails.cache
+        end
+
+        def memory_store
+          require 'active_support/cache'
+          ActiveSupport::Cache::MemoryStore.new
         end
 
       end
