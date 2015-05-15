@@ -77,7 +77,7 @@ module Aranea
         end
 
         def rails_cache
-          defined?(Rails::RAILS_CACHE) && Rails.cache
+          defined?(Rails.cache) && Rails.cache
         end
 
         def memory_store
