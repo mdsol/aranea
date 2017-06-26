@@ -73,4 +73,16 @@ describe Aranea::Faraday::FailureSimulator do
 
   end
 
+  context 'when an SSL error is simulated' do
+    before do
+      Aranea::Failure.create(pattern: 'yahoo|google', failure: 'ssl_error', minutes: 100)
+      @env[:url] = 'https://www.google.com/search?q=adorable+puppies'
+      allow_any_instance_of(described_class).to receive(:puts)
+    end
+
+    it 'throws a Faraday::SSLError' do
+      expect { described_class.new(@app).call(@env) }.to raise_error(Faraday::SSLError)
+    end
+  end
+
 end
