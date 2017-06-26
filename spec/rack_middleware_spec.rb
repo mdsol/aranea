@@ -69,7 +69,7 @@ describe Aranea::Rack::FailureCreator do
     it 'responds with an error on an unrecognized failure mode' do
       [200, 600, 'llama', ''].each do |failure|
         @env['QUERY_STRING'] = "dependency=example&failure=#{failure}"
-        expect(response_body).to eq("failure should be a 4xx or 5xx status code or timeout, got #{failure}")
+        expect(response_body).to eq("failure should be a 4xx or 5xx status code, timeout, or ssl_error; got #{failure}")
       end
     end
 

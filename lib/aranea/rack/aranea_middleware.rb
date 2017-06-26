@@ -42,8 +42,8 @@ module Aranea
         minutes    = options.fetch('minutes')    { 5 }
         failure    = options.fetch('failure')    { '500' }
 
-        unless failure =~ /\A((4|5)\d\d|timeout)\Z/
-          raise FailureFailure, "failure should be a 4xx or 5xx status code or timeout, got #{failure}"
+        unless failure =~ /\A((4|5)\d\d|timeout|ssl_error)\Z/
+          raise FailureFailure, "failure should be a 4xx or 5xx status code, timeout, or ssl_error; got #{failure}"
         end
 
         unless ALLOWED_MINUTES.cover?(minutes.to_i)

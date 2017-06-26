@@ -42,6 +42,8 @@ module Aranea
     def respond!
       if @response == 'timeout'
         raise ::Faraday::Error::TimeoutError, 'Fake failure from Aranea'
+      elsif @response == 'ssl_error'
+        raise ::Faraday::SSLError, 'Fake failure from Aranea'
       else
         ::Faraday::Response.new(status: @response.to_i, body: 'Fake failure from Aranea', response_headers: {})
       end
