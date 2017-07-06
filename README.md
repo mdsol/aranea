@@ -29,6 +29,8 @@ You can also override the simulated response code, if your app is meant to handl
 
 `https://myapp-sandbox.example.com/disable?dependency=.&failure=403` For the next 5 minutes, all external requests will 403.
 
+`https://myapp-sandbox.example.com/disable?dependency=sheep&failure=ssl_error` For the next 5 minutes, all external requests to urls containing `sheep` will raise a Faraday::SSLError.
+
 `https://myapp-sandbox.example.com/disable?dependency=google|yahoo&minutes=10` For the next 10 minutes, all requests to urls containing 'google' and/or 'yahoo' will 500.
 
 `https://myapp-sandbox.example.com/disable?dependency=google|yahoo&minutes=10&failure=timeout` For the next 10 minutes, all requests to urls containing 'google' and/or 'yahoo' will raise a Timeout error.

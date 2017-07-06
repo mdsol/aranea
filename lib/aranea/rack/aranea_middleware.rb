@@ -42,8 +42,8 @@ module Aranea
         minutes    = options.fetch('minutes')    { 5 }
         failure    = options.fetch('failure')    { '500' }
 
-        unless failure =~ /\A((4|5)\d\d|timeout)\Z/
-          raise FailureFailure, "failure should be a 4xx or 5xx status code or timeout, got #{failure}"
+        unless failure =~ /\A((4|5)\d\d|timeout|ssl_error)\Z/i
+          raise FailureFailure, "failure should be a 4xx or 5xx status code, timeout, or ssl_error; got #{failure}"
         end
 
         unless ALLOWED_MINUTES.cover?(minutes.to_i)
@@ -52,7 +52,7 @@ module Aranea
 
         Failure.create(pattern: dependency, minutes: minutes.to_i, failure: failure)
 
-        result = "For the next #{minutes} minutes, all requests to urls containing '#{dependency}' will #{failure}"
+        result = "For the next #{minutes} minutes, all requests to urls containing '#{dependency}' will #{failure.downcase}"
 
         #TODO: injectable logger
         puts "Aranea: #{result}"

@@ -50,6 +50,16 @@ describe Aranea::Rack::FailureCreator do
       expect(response_body).to eq("For the next 10 minutes, all requests to urls containing 'example' will timeout")
     end
 
+    it 'accepts ssl_error as a failure' do
+      @env['QUERY_STRING'] = 'dependency=example&minutes=10&failure=ssl_error'
+      expect(response_body).to eq("For the next 10 minutes, all requests to urls containing 'example' will ssl_error")
+    end
+
+    it 'is case insensitive when accepting string-based failures' do
+      @env['QUERY_STRING'] = 'dependency=example&minutes=10&failure=tImEoUt'
+      expect(response_body).to eq("For the next 10 minutes, all requests to urls containing 'example' will timeout")
+    end
+
     it 'properly sets the expiry' do
       @env['QUERY_STRING'] = 'dependency=example&minutes=10&failure=422'
       described_class.new(@app).call(@env).last
@@ -69,7 +79,7 @@ describe Aranea::Rack::FailureCreator do
     it 'responds with an error on an unrecognized failure mode' do
       [200, 600, 'llama', ''].each do |failure|
         @env['QUERY_STRING'] = "dependency=example&failure=#{failure}"
-        expect(response_body).to eq("failure should be a 4xx or 5xx status code or timeout, got #{failure}")
+        expect(response_body).to eq("failure should be a 4xx or 5xx status code, timeout, or ssl_error; got #{failure}")
       end
     end
 
