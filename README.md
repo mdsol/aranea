@@ -50,7 +50,7 @@ All parameters are required in this form. They may alternatively be provided as 
 In your Gemfile:
 
 ```ruby
-gem 'aranea', git: 'git@github.com:mdsol/aranea.git'
+gem 'aranea'
 ```
 
 In your Faraday middleware stack (wherever and however you configure it):
