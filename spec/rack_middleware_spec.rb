@@ -41,7 +41,7 @@ describe Aranea::Rack::FailureCreator do
     end
 
     it 'uses optional arguments when provided' do
-      @env['QUERY_STRING'] = 'dependency=example&minutes=10&failure=422'
+      @env['QUERY_STRING'] = 'dependency=example&minutes=10&failure=422&response=%7B%7D&headers=%7B%7D'
       status, headers, response = described_class.new(@app).call(@env).flatten.to_a
       expect(response).to eq("For the next 10 minutes, all requests to urls containing 'example' will 422")
     end

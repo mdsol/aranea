@@ -21,6 +21,8 @@ You must specify a dependency. If you want *all* external requests to fail, set 
 
 You can override the duration of the test by specifying `minutes=` with a number from 1 to 60.
 
+You can optionally specify the response body by setting `response=` and also the response header by setting `header=`. The endpoint to create a stubbed response uses query parameters, so your `response` and `header` fields must be URL encoded. For example, to return a response `{ "errors": "test_error" }`, you must send `response=%7B%20%22errors%22%3A%20%22test_error%22%20%7D`.
+
 You can also override the simulated response code, if your app is meant to handle different failures differently. `?dependency=google&failure=404` will simulate a 404 (Not Found) response instead of a 500 (Internal Server Error). `?dependency=google&failure=timeout` will pretend the server never responded at all (although it will raise an error instantly; the illusion is not perfect).
 
 **Sample calls and their effects:**
@@ -35,12 +37,22 @@ You can also override the simulated response code, if your app is meant to handl
 
 `https://myapp-sandbox.example.com/disable?dependency=google|yahoo&minutes=10&failure=timeout` For the next 10 minutes, all requests to urls containing 'google' and/or 'yahoo' will raise a Timeout error.
 
+`https://myapp-sandbox.example.com/disable?dependency=google|yahoo&minutes=10&failure=timeout&response=%7B%20%22errors%22%3A%20%22test_error%22%20%7D` Similar to the above example, except all external requests that match will now return `{ "errors": "test_error" }`.
+
+`https://myapp-sandbox.example.com/disable?dependency=google|yahoo&minutes=10&failure=timeout&response=%7B%20%22errors%22%3A%20%22test_error%22%20%7D&headers=%7B%20%22Content-Type%22%3A%20%22application%2Fjson%22%20%7D` Similar to the above example,except all external requests that match will now return `{ "errors": "test_error" }`, and will return the header `{ "Content-Type": "application/json" }`
+
 # Activating Aranea Programmatically
 
 From inside your application, you can run
 
 ```ruby
-Aranea::Failure.create(pattern: /google/, minutes: 5, failure: 503)
+Aranea::Failure.create(
+  pattern: /google/,
+  minutes: 5,
+  failure: 503,
+  response_hash: { "errors": "test_error" },
+  response_headers_hash: { "Content-Type": "application/json" }
+)
 ```
 
 All parameters are required in this form. They may alternatively be provided as strings ('google','5').

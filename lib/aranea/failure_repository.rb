@@ -1,5 +1,7 @@
 require 'faraday'
 require 'active_support/core_ext/numeric/time'
+require 'json'
+
 module Aranea
   
   # TODO: Look into moving whitelisting of consumer hostnames to here and allowing it to be configurable via the consuming application
