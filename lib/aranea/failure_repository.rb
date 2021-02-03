@@ -33,6 +33,8 @@ module Aranea
     def initialize(params)
       @pattern = Regexp.new(params[:pattern])
       @response = params[:failure]
+      @response_hash = params[:response_hash]
+      @response_headers_hash = params[:response_headers_hash]
     end
 
     def should_fail?(request_env, app)
@@ -45,7 +47,11 @@ module Aranea
       elsif @response == 'ssl_error'
         raise ::Faraday::SSLError, 'Fake failure from Aranea'
       else
-        ::Faraday::Response.new(status: @response.to_i, body: 'Fake failure from Aranea', response_headers: {})
+        ::Faraday::Response.new(
+          status: @response.to_i,
+          body: @response_hash.to_json,
+          response_headers: @response_headers_hash
+        )
       end
     end
 
