@@ -33,8 +33,8 @@ module Aranea
     def initialize(params)
       @pattern = Regexp.new(params[:pattern])
       @response = params[:failure]
-      @response_hash = params[:response_hash]
-      @response_headers_hash = params[:response_headers_hash]
+      @response_hash = params[:response_hash] || {}
+      @response_headers_hash = params[:response_headers_hash] || {}
     end
 
     def should_fail?(request_env, app)
