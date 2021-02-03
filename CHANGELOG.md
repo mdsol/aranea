@@ -1,5 +1,5 @@
 ## 0.0.3
-Added ability to raise specify the response and response headers
+Added ability to specify the response body and response headers
 
 ## 0.0.2
 Ability to raise Faraday::SSLError

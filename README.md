@@ -39,7 +39,7 @@ You can also override the simulated response code, if your app is meant to handl
 
 `https://myapp-sandbox.example.com/disable?dependency=google|yahoo&minutes=10&failure=timeout&response=%7B%20%22errors%22%3A%20%22test_error%22%20%7D` Similar to the above example, except all external requests that match will now return `{ "errors": "test_error" }`.
 
-`https://myapp-sandbox.example.com/disable?dependency=google|yahoo&minutes=10&failure=timeout&response=%7B%20%22errors%22%3A%20%22test_error%22%20%7D&headers=%7B%20%22Content-Type%22%3A%20%22application%2Fjson%22%20%7D` Similar to the above example,except all external requests that match will now return `{ "errors": "test_error" }`, and will return the header `{ "Content-Type": "application/json" }`
+`https://myapp-sandbox.example.com/disable?dependency=google|yahoo&minutes=10&failure=timeout&response=%7B%20%22errors%22%3A%20%22test_error%22%20%7D&headers=%7B%20%22Content-Type%22%3A%20%22application%2Fjson%22%20%7D` Similar to the above example, except all external requests that match will now return `{ "errors": "test_error" }`, and will return the header `{ "Content-Type": "application/json" }`
 
 # Activating Aranea Programmatically
 
