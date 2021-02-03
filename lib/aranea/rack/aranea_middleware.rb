@@ -1,5 +1,6 @@
 require 'aranea/failure_repository'
 require 'rack'
+require 'json'
 
 module Aranea
 
@@ -41,6 +42,12 @@ module Aranea
         dependency = options.fetch('dependency') { raise FailureFailure, 'Please provide a dependency to simulate failing' }
         minutes    = options.fetch('minutes')    { 5 }
         failure    = options.fetch('failure')    { '500' }
+        response   = options.fetch('response')   { '{}' } # Expect URI encoded
+        headers    = options.fetch('headers')    { '{}' }
+
+        # These will emit a parsing error if the response/headers URI encoded string is malformed.
+        response_hash = JSON.parse(CGI.unescape(response)).to_hash
+        response_headers_hash = JSON.parse(CGI.unescape(headers)).to_hash
 
         unless failure =~ /\A((4|5)\d\d|timeout|ssl_error)\Z/i
           raise FailureFailure, "failure should be a 4xx or 5xx status code, timeout, or ssl_error; got #{failure}"
@@ -50,7 +57,13 @@ module Aranea
           raise FailureFailure, "minutes should be an integer from #{ALLOWED_MINUTES.begin} to #{ALLOWED_MINUTES.end}, got #{minutes}"
         end
 
-        Failure.create(pattern: dependency, minutes: minutes.to_i, failure: failure)
+        Failure.create(
+          pattern: dependency,
+          minutes: minutes.to_i,
+          failure: failure,
+          response_hash: response_hash,
+          response_headers_hash: response_headers_hash
+        )
 
         result = "For the next #{minutes} minutes, all requests to urls containing '#{dependency}' will #{failure.downcase}"
 

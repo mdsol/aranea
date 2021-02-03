@@ -21,9 +21,20 @@ describe Aranea::Faraday::FailureSimulator do
   end
 
   context 'a failure is active' do
+    let(:pattern) { 'yahoo|google' }
+    let(:failure) { 415 }
+    let(:minutes) { 100 }
+    let(:response_hash) { {'hello': 'there'} }
+    let(:response_headers_hash) { {'Content-type': 'application/json'} }
 
     before do
-      Aranea::Failure.create(pattern: 'yahoo|google', failure: '415', minutes: 100)
+      Aranea::Failure.create(
+        pattern: pattern,
+        failure: failure,
+        minutes: minutes,
+        response_hash: response_hash,
+        response_headers_hash: response_headers_hash
+      )
     end
 
     context 'the request does not match the specified pattern' do
@@ -52,8 +63,11 @@ describe Aranea::Faraday::FailureSimulator do
         described_class.new(@app).call(@env)
       end
 
-      it 'returns the specified response code' do
-        described_class.new(@app).call(@env).status.should eq(415)
+      it 'returns the specified response code, headers, and body' do
+        response = described_class.new(@app).call(@env)
+        response.status.should eq(415)
+        response.body.should eq(response_hash.to_json)
+        response.headers.should include(response_headers_hash)
       end
     end
 
