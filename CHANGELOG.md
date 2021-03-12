@@ -1,3 +1,6 @@
+## 0.0.4
+Adding travis.yml file to publish gem to rubygems.org upon tagging
+
 ## 0.0.3
 Added ability to specify the response body and response headers
 

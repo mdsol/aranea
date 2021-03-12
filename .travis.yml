@@ -1,0 +1,5 @@
+deploy:
+  edge: true # opt in to dpl v2 see: https://docs.travis-ci.com/user/deployment-v2
+  provider: rubygems
+  on:
+    tags: true
