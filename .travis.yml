@@ -1,0 +1,26 @@
+dist: focal
+language: ruby
+cache: bundler
+
+rvm:
+  - 2.5
+  - 2.6
+  - 2.7
+  - 3.0
+
+before_install:
+  - gem update --system --force -N > /dev/null && echo "Rubygems version $(gem --version)"
+  - gem install bundler --force -N && bundle --version
+
+install: BUNDLE_JOBS=4 bundle install
+
+script:
+  - bundle exec rubocop
+  - bundle exec rspec
+
+deploy:
+  edge: true # opt in to dpl v2
+  provider: rubygems
+  on:
+    tags: true
+    condition: $TRAVIS_RUBY_VERSION == 3.0
