@@ -26,11 +26,13 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "activesupport", ">= 4.2"
-  s.add_dependency "faraday", ">= 0.9", "< 2.0"
+  s.add_dependency "faraday", ">= 0.9", "< 3.0"
   s.add_dependency "rack"
 
   s.add_development_dependency "pry-byebug"
   s.add_development_dependency "rails"
   s.add_development_dependency "rspec"
+  s.add_development_dependency "rubocop", "= 1.26.1"
   s.add_development_dependency "rubocop-mdsol", "~> 0.1"
+  s.add_development_dependency "rubocop-performance", "= 1.13.3"
 end

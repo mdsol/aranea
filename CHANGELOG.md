@@ -1,3 +1,6 @@
+# 0.2.0
+- Allow Faraday 2.x.
+
 # 0.1.0
 - Require Ruby 2.5 and up.
 - Require ActiveSupport 4.2 and up.
