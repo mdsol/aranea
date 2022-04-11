@@ -7,10 +7,10 @@ rvm:
   - 2.6
   - 2.7
   - 3.0
+  - 3.1
 
 before_install:
-  - gem update --system --force -N > /dev/null && echo "Rubygems version $(gem --version)"
-  - gem install bundler --force -N && bundle --version
+  - gem update --system --force -N > /dev/null && echo "Rubygems version $(gem --version)" && bundle --version
 
 install: BUNDLE_JOBS=4 bundle install
 
@@ -23,4 +23,4 @@ deploy:
   provider: rubygems
   on:
     tags: true
-    condition: $TRAVIS_RUBY_VERSION == 3.0
+    condition: $TRAVIS_RUBY_VERSION == 3.1

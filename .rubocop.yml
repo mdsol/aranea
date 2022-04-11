@@ -1,6 +1,12 @@
 inherit_gem:
   rubocop-mdsol: rubocop.yml
 
+require:
+  - rubocop-performance
+
+Gemspec/RequireMFA:
+  Enabled: false
+
 Layout/ArgumentAlignment:
   EnforcedStyle: with_fixed_indentation
 

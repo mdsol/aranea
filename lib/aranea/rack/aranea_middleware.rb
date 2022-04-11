@@ -46,7 +46,7 @@ module Aranea
         response_hash = JSON.parse(CGI.unescape(response)).to_hash
         response_headers_hash = JSON.parse(CGI.unescape(headers)).to_hash
 
-        unless failure =~ /\A((4|5)\d\d|timeout|ssl_error)\Z/i
+        unless /\A((4|5)\d\d|timeout|ssl_error)\Z/i.match?(failure)
           raise FailureFailure, "failure should be a 4xx or 5xx status code, timeout, or ssl_error; got #{failure}"
         end
 
@@ -64,7 +64,7 @@ module Aranea
         )
 
         result = "For the next #{minutes} minutes, all requests to urls containing '#{dependency}' " \
-          "will #{failure.downcase}"
+                 "will #{failure.downcase}"
 
         # TODO: injectable logger
         puts "Aranea: #{result}"
